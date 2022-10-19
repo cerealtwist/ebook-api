@@ -1,8 +1,8 @@
 <?php
 
-use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BookController;
 use Illuminate\Http\Request;
-use App\Http\Controllers\testController;
+use App\Http\Controllers\siswaController;
 use Illuminate\Support\Facades\Route;
 
 /*
