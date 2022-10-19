@@ -16,7 +16,10 @@ class StudentController extends Controller
     {
         $data = Student::all();
 
-        return $data;
+        return response()->json([
+            "message" => "Load data success",
+            "data" => $data
+        ], 200);
     }
 
     /**
@@ -37,8 +40,11 @@ class StudentController extends Controller
      */
     public function store(Request $request)
     {
-        $store = Student::create($request->all());
-        return $store;
+        $table = Student::create($request->all());
+        return response()->json([
+            "message" => "Store success.",
+            "data" => $table
+        ], 201);
     }
 
     /**
@@ -49,7 +55,12 @@ class StudentController extends Controller
      */
     public function show($id)
     {
-        //
+        $table = Student::find($id);
+        if($table){
+            return $table;
+        }else{
+            return ["message" => "Data not found"];
+        }
     }
 
     /**
@@ -72,8 +83,14 @@ class StudentController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $update = Student::where("id", $id)->update($request->all());
-        return $update; 
+        $table = Student::find($id);
+        if($table){
+            $table->name = $request->all();
+            $table->save();
+            return $table;
+        }else{
+            return ["message" => "Data not found"]; 
+        }
     }
 
     /**
@@ -84,7 +101,12 @@ class StudentController extends Controller
      */
     public function destroy($id)
     {
-        $destroy = Student::destroy($id);
-        return $destroy;
+        $table = Student::find($id);
+        if($table){
+            $table->delete();
+            return ["message" => "Delete success!"];
+        }else{
+            return ["message" => "Data not found."];
+        }
     }
 }

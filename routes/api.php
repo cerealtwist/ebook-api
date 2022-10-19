@@ -23,4 +23,4 @@ Route::get('halo', function (){
 
 Route::resource('siswaController', siswaController::class);
 
-Route::resource('/me', AuthController::class);
+Route::resource('/books', BookController::class);

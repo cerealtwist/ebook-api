@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\book;
 use Illuminate\Http\Request;
 
-class AuthController extends Controller
+class BookController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -13,7 +14,12 @@ class AuthController extends Controller
      */
     public function index()
     {
-        //
+        $data = book::all();
+
+        return response()->json([
+            "message" => "Load data success",
+            "data" => $data
+        ], 200);
     }
 
     /**
@@ -34,7 +40,11 @@ class AuthController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $table = book::create($request->all());
+        return response()->json([
+            "message" => "Store success.",
+            "data" => $table
+        ], 201);
     }
 
     /**
@@ -45,7 +55,12 @@ class AuthController extends Controller
      */
     public function show($id)
     {
-        //
+        $table = book::find($id);
+        if($table){
+            return $table;
+        }else{
+            return ["message" => "Data not found"];
+        }
     }
 
     /**
@@ -68,7 +83,14 @@ class AuthController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $table = book::find($id);
+        if($table){
+            $table->name = $request->all();
+            $table->save();
+            return $table;
+        }else{
+            return ["message" => "Data not found"]; 
+        }
     }
 
     /**
@@ -79,6 +101,12 @@ class AuthController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $table = book::find($id);
+        if($table){
+            $table->delete();
+            return ["message" => "Delete success!"];
+        }else{
+            return ["message" => "Data not found."];
+        }
     }
 }
