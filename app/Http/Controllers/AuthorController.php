@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\book;
+use App\Models\Author;
 use Illuminate\Http\Request;
 
-class BookController extends Controller
+class AuthorController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,7 +14,7 @@ class BookController extends Controller
      */
     public function index()
     {
-        $data = book::all();
+        $data = Author::all();
 
         return response()->json([
             "message" => "Load data success",
@@ -40,7 +40,7 @@ class BookController extends Controller
      */
     public function store(Request $request)
     {
-        $table = book::create($request->all());
+        $table = Author::create($request->all());
         return response()->json([
             "message" => "Store success.",
             "data" => $table
@@ -55,7 +55,7 @@ class BookController extends Controller
      */
     public function show($id)
     {
-        $table = book::find($id);
+        $table = Author::find($id);
         if($table){
             return $table;
         }else{
@@ -83,10 +83,11 @@ class BookController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $table = book::find($id);
+        $table = Author::find($id);
         if($table){
             $table->name = $request->all();
-            return ["message" => "Update success!"];
+            $table->save();
+            return $table;
         }else{
             return ["message" => "Data not found"]; 
         }
@@ -100,7 +101,7 @@ class BookController extends Controller
      */
     public function destroy($id)
     {
-        $table = book::find($id);
+        $table = Author::find($id);
         if($table){
             $table->delete();
             return ["message" => "Delete success!"];

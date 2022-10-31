@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BookController;
 use Illuminate\Http\Request;
 use App\Http\Controllers\siswaController;
@@ -16,11 +17,22 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('halo', function (){
-    $data = ["Me" => "Ganteng"];
-    return $data;
+Route::middleware('auth:sanctum')->get('/user', function (Request $request){
+    return $request->user();
 });
 
-Route::resource('siswaController', siswaController::class);
+// public route
+Route::post('/register', [AuthController::class, 'register']);
+Route::post('/login', [AuthController::class, 'login']);
 
-Route::resource('/books', BookController::class);
+Route::get('/books', [BookController::class, 'index']);
+Route::get('/Books/{id}', [BookController::class, 'show']);
+// Route::get('/Authors', [AuthorController::class, 'index']);
+// Route::get('/Author/{id}', [AuthorController::class, 'show']);
+
+//protected
+Route::middleware('auth:sanctum')->group(function () {
+    Route::resource('books', BookController::class)->except('create', 'edit', 'show', 'index');
+    Route::post('/logout', [AuthController::class, 'logout']);
+    // Route::resource('authors', AuthorController::class)->except('create', 'edit', 'show', 'index');
+});
